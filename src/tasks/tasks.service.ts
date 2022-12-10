@@ -7,7 +7,6 @@ import { Task, TaskStatus } from './task.model';
 
 @Injectable()
 export class TasksService {
-
   private tasks: Task[] = [];
 
   getAllTasks(): Task[] {
@@ -27,11 +26,11 @@ export class TasksService {
   }
 
   getTaskById(id: string): Task {
-    return this.tasks.find(task => task.id === id);
+    return this.tasks.find((task) => task.id === id);
   }
 
   removeTask(id: string) {
-    this.tasks.filter(task => task.id !== id);
-    return {id, data: 'task has been removed'};
+    this.tasks = this.tasks.filter((task) => task.id !== id);
+    return { id, data: 'task has been removed' };
   }
 }

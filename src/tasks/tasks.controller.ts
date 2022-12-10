@@ -6,7 +6,7 @@ import { TasksService } from './tasks.service';
 
 @Controller('tasks')
 export class TasksController {
-  constructor(private readonly taskServ: TasksService) { }
+  constructor(private readonly taskServ: TasksService) {}
 
   @Get()
   onGetAllTasks(): Task[] {
@@ -24,8 +24,8 @@ export class TasksController {
     return this.taskServ.createTask(createTaskDto);
   }
 
-  @Delete()
-  onRemoveTask(@Body('id') id: string) {
+  @Delete('/:id')
+  onRemoveTask(@Param('id') id: string) {
     return this.taskServ.removeTask(id);
   }
 }
