@@ -26,11 +26,27 @@ export class TasksService {
   }
 
   getTaskById(id: string): Task {
-    return this.tasks.find((task) => task.id === id);
+    return this.getTask(id);
   }
 
   removeTask(id: string) {
+    const task = this.getTask(id);
     this.tasks = this.tasks.filter((task) => task.id !== id);
-    return { id, data: 'task has been removed' };
+    return task;
+  }
+
+  updateTaskStatus(id: string, taskStatus: TaskStatus) {
+    const task = this.getTask(id);
+    const updatedTask = { ...task, status: taskStatus };
+    const updatedtasks = [
+      ...this.tasks.filter((task) => task.id !== id),
+      updatedTask,
+    ];
+    this.tasks = updatedtasks;
+    return task;
+  }
+
+  private getTask(id: string): Task {
+    return this.tasks.find((task) => task.id === id);
   }
 }
