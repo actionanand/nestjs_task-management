@@ -15,20 +15,25 @@ export class TasksService {
   }
 
   getTasksWithFilters({ status, search }: GetTaskFilterDto): Task[] {
-    const tasks = this.getAllTasks();
+    let tasks = this.getAllTasks();
 
     if (status) {
-      return tasks.filter((task) => task.status === status);
+      tasks = tasks.filter((task) => task.status === status);
     }
 
     if (search) {
-      return tasks.filter((task) => {
-        if (task.title.toLocaleLowerCase().includes(search) || task.description.toLocaleLowerCase().includes(search)) {
+      tasks = tasks.filter((task) => {
+        if (
+          task.title.toLocaleLowerCase().includes(search) ||
+          task.description.toLocaleLowerCase().includes(search)
+        ) {
           return true;
         }
         return false;
       });
     }
+
+    return tasks;
   }
 
   createTask({ title, description }: CreateTaskDto): Task {

@@ -16,11 +16,11 @@ import { TasksService } from './tasks.service';
 
 @Controller('tasks')
 export class TasksController {
-  constructor(private readonly taskServ: TasksService) { }
+  constructor(private readonly taskServ: TasksService) {}
 
   @Get()
   onGetTasks(@Query() filterDto: GetTaskFilterDto): Task[] {
-    if(Object.keys(filterDto).length) {
+    if (Object.keys(filterDto).length) {
       return this.taskServ.getTasksWithFilters(filterDto);
     } else {
       return this.taskServ.getAllTasks();
