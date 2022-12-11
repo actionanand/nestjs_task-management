@@ -74,7 +74,7 @@ Nest is an MIT-licensed open source project. It can grow thanks to the sponsors 
 
 ### Docker
 
-- Run `postgres` in `docker` after installing the docker locally
+1.  Run `postgres` in `docker` after installing the docker locally
 
 ```sh
 docker run --name postgres-nest -p 5432:5432 -e POSTGRES_PASSWORD=postgres -d postgres
@@ -84,6 +84,14 @@ docker run --name postgres-nest -p 5432:5432 -e POSTGRES_PASSWORD=postgres -d po
 
 ```bash
 docker container ls
+```
+or
+```bash
+docker ps
+```
+or to see inactive containers
+```sh
+docker ps -a
 ```
 
 - How to `stop` the container by name
@@ -104,9 +112,67 @@ docker container start postgres-nest
 docker container rm postgres-nest
 ```
 
+2. Finally you can check that the access to the `postgres instance` using docker exec command as indicated below:
+
+```bash
+$ docker exec -it postgres-nest bash
+root@9d983793b7b3:/# psql -h localhost -U postgres
+psql (13.4 (Debian 13.4-1.pgdg110+1))
+Type "help" for help.
+postgres=# \list
+                        List of databases
+   Name  |  Owner | Encoding | Collate    | Ctype      | Access P..
+---------+--------+----------+------------+------------+------------
+postgres |postgres| UTF8     | en_US.utf8 | en_US.utf8 |
+template0|postgres| UTF8     | en_US.utf8 | en_US.utf8 |=c/postgres+    
+         |        |          |            |      postgres=CTc/pos...
+template1|postgres| UTF8     | en_US.utf8 |en_US.utf8. |=c/postgre +       |        |        |          |            |postgres=CTc/pos...
+(3 rows)
+```
+
+3. Running pgAdmin docker container
+
+- To download the latest stable version of the image, open a terminal and type the following:
+
+```sh
+docker pull dpage/pgadmin4:latest
+```
+
+- After downloading the image, we need to run the container making sure that the container connects with the other container running postgres. In order to do so we type the following command:
+
+```sh
+docker run --name my-pgadmin -p 55550:80 -e 'PGADMIN_DEFAULT_EMAIL=anand@ar.com' -e 'PGADMIN_DEFAULT_PASSWORD=postgresmaster'-d dpage/pgadmin4
+```
+
+4. Accessing pgAdmin
+
+- You only need to open your favourite browser and type the following url: http://localhost:55550/ so your instance of pgAdmin will show up.
+
+- To access, type the username and the password you established in the step one, when running the postgres container (if you followed the tutorial the user name is `anand@ar.com` and the password is `postgresmaster`).
+
+- Once you are on the main page, you have to create a connection with the postgres server. In order to do so, just click on `Add New Server` and a new dialog window will show up. There you must fill in 2 mandatory fields:
+    - As indicated in the following picture, a `Name` to identify the connection to our `PostgreSQL server` must be provided. In our case we have selected `nest pg`. You can put anyname here.
+
+    - The second required value is `Host name/address` and it is located on the form under the tab `Connection`. The value to input is `172.17.0.2` in our case. This value can be obtained by using the command `docker inspect` from the terminal (this command with the `-f` option provides us with the networking parameters in JSON format of the container `postgres-nest`).
+
+```sh
+docker inspect postgres-nest -f “{{json .NetworkSettings.Networks }}”
+```
+
+the output will be as below:
+
+```sh
+{“bridge”:{“IPAMConfig”:null,”Links”:null,”Aliases”:null,”NetworkID”:”3893d72cd028eb21a8653ee56290c9aaba8822d16f1453777fb107e5e12afe70",”EndpointID”:”23fce49b0adfcb2ebf307076ae641b57c58e568704826fb1ed74aec86a27eb3f”,”Gateway”:”172.17.0.1",”IPAddress”:”172.17.0.2”,”IPPrefixLen”:16,”IPv6Gateway”:””,”GlobalIPv6Address”:””,”GlobalIPv6PrefixLen”:0,”MacAddress”:”02:42:ac:11:00:04",”DriverOpts”:null}}
+```
+
+- Once filled in the field `Host name/address`, you just need to input `postgres` for the user field and `postgres`  for the password field (if you followed till now).
+
 ### Resources
 
 - [Class-Validator github](https://github.com/typestack/class-validator)
+- [How to run PostgreSQL & PgAdmin in 3 steps using Docker](https://migueldoctor.medium.com/how-to-run-postgresql-pgadmin-in-3-steps-using-docker-d6fe06e47ca1)
+- [How to run Postgres on Docker part 1](https://www.optimadata.nl/blogs/1/n8dyr5-how-to-run-postgres-on-docker-part-1)
+
 
 ## License
 
