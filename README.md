@@ -72,11 +72,42 @@ Nest is an MIT-licensed open source project. It can grow thanks to the sponsors 
 - Website - [https://nestjs.com](https://nestjs.com/)
 - Twitter - [@nestframework](https://twitter.com/nestframework)
 
-## License
+### Docker
 
-Nest is [MIT licensed](LICENSE).
+- Run `postgres` in `docker` after installing the docker locally
 
+```sh
+docker run --name postgres-nest -p 5432:5432 -e POSTGRES_PASSWORD=postgres -d postgres
+```
+
+- How to check running containers in dockers locally
+
+```bash
+docker container ls
+```
+
+- How to `stop` the container by name
+
+```sh
+docker container stop postgres-nest
+```
+
+- How to `start` the container after stopping it by name
+
+```bash
+docker container start postgres-nest
+```
+
+- How to `remove` or `delete` the container after stopping it by name
+
+```sh
+docker container rm postgres-nest
+```
 
 ### Resources
 
 - [Class-Validator github](https://github.com/typestack/class-validator)
+
+## License
+
+Nest is [MIT licensed](LICENSE).
