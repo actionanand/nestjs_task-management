@@ -72,7 +72,7 @@ Nest is an MIT-licensed open source project. It can grow thanks to the sponsors 
 - Website - [https://nestjs.com](https://nestjs.com/)
 - Twitter - [@nestframework](https://twitter.com/nestframework)
 
-### Docker
+### Docker - postgreSql
 
 1.  Run `postgres` in `docker` after installing the docker locally
 
@@ -151,12 +151,17 @@ docker run --name my-pgadmin -p 55550:80 -e 'PGADMIN_DEFAULT_EMAIL=anand@ar.com'
 - To access, type the username and the password you established in the step one, when running the postgres container (if you followed the tutorial the user name is `anand@ar.com` and the password is `postgresmaster`).
 
 - Once you are on the main page, you have to create a connection with the postgres server. In order to do so, just click on `Add New Server` and a new dialog window will show up. There you must fill in 2 mandatory fields:
+
     - As indicated in the following picture, a `Name` to identify the connection to our `PostgreSQL server` must be provided. In our case we have selected `nest pg`. You can put anyname here.
 
     - The second required value is `Host name/address` and it is located on the form under the tab `Connection`. The value to input is `172.17.0.2` in our case. This value can be obtained by using the command `docker inspect` from the terminal (this command with the `-f` option provides us with the networking parameters in JSON format of the container `postgres-nest`).
 
 ```sh
 docker inspect postgres-nest -f “{{json .NetworkSettings.Networks }}”
+```
+or
+```sh
+docker inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' container_name_or_id
 ```
 
 the output will be as below:
@@ -166,6 +171,51 @@ the output will be as below:
 ```
 
 - Once filled in the field `Host name/address`, you just need to input `postgres` for the user field and `postgres`  for the password field (if you followed till now).
+
+5. Changing `postgres` password
+
+```sh
+$ docker exec -it postgres-nest bash
+root@9d983793b7b3:/# psql -h localhost -U postgres
+psql (13.4 (Debian 13.4-1.pgdg110+1))
+Type "help" for help.
+
+postgres=# ALTER ROLE postgres WITH PASSWORD 'postgres';
+ALTER ROLE
+postgres=#
+```
+
+### Windows - postgreSql
+
+
+```sh
+C:\Program Files\PostgreSQL\15\bin>psql -U postgres -p 5433
+Password for user postgres:
+psql (15.1)
+WARNING: Console code page (437) differs from Windows code page (1252)
+         8-bit characters might not work correctly. See psql reference
+         page "Notes for Windows users" for details.
+Type "help" for help.
+
+postgres=# \list
+                                                                List of databases
+   Name    |  Owner   | Encoding |          Collate           |           Ctype            | ICU Locale | Locale Provider |   Access privileges
+-----------+----------+----------+----------------------------+----------------------------+------------+-----------------+-----------------------
+ postgres  | postgres | UTF8     | English_United States.1252 | English_United States.1252 |            | libc            |
+ template0 | postgres | UTF8     | English_United States.1252 | English_United States.1252 |            | libc            | =c/postgres          +
+           |          |          |                            |                            |            |                 | postgres=CTc/postgres
+ template1 | postgres | UTF8     | English_United States.1252 | English_United States.1252 |            | libc            | =c/postgres          +
+           |          |          |                            |                            |            |                 | postgres=CTc/postgres
+(3 rows)
+
+
+postgres=#
+```
+
+- [Connect to PostgreSQL Database on Linux, Windows](https://www.w3resource.com/PostgreSQL/connect-to-postgresql-database.php)
+- [How to install PostgreSQL on Windows](https://www.sqlshack.com/how-to-install-postgresql-on-windows/)
+- [Download PostgreSQL](https://www.enterprisedb.com/downloads/postgres-postgresql-downloads)
+
 
 ### Resources
 
