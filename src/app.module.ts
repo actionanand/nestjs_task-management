@@ -11,16 +11,16 @@ import { TasksModule } from './tasks/tasks.module';
     TasksModule,
     TypeOrmModule.forRoot({
       type: 'postgres',
-      host: '172.17.0.2',
-      port: 5432,
+      host: 'localhost',
+      port: 5433,
       username: 'postgres',
       password: 'postgres',
       database: 'task-management',
       autoLoadEntities: true,
-      synchronize: true
-    })
+      synchronize: true,
+    }),
   ],
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule { } 
+export class AppModule {}
