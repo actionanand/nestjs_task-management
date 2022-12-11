@@ -75,3 +75,8 @@ Nest is an MIT-licensed open source project. It can grow thanks to the sponsors 
 ## License
 
 Nest is [MIT licensed](LICENSE).
+
+
+### Resources
+
+- [Class-Validator github](https://github.com/typestack/class-validator)
