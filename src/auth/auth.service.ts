@@ -8,14 +8,16 @@ import { User } from './user.entity';
 
 @Injectable()
 export class AuthService {
-  constructor(@InjectRepository(User)
-  private userRepo: Repository<User>) {}
+  constructor(
+    @InjectRepository(User)
+    private userRepo: Repository<User>,
+  ) {}
 
   async signUp({ username, password }: AuthCredentialsDto): Promise<void> {
     const user = this.userRepo.create({
       username,
-      password
-    })
+      password,
+    });
 
     await this.userRepo.save(user);
   }
