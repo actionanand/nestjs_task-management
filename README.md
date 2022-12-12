@@ -224,6 +224,7 @@ postgres=#
 - [How to run Postgres on Docker part 1](https://www.optimadata.nl/blogs/1/n8dyr5-how-to-run-postgres-on-docker-part-1)
 - [Active Record vs Data Mapper](https://github.com/typeorm/typeorm/blob/master/docs/active-record-data-mapper.md)
 - [TypeOrm Repository APIs - doc](https://orkhan.gitbook.io/typeorm/docs/repository-api)
+- [Connecting TypeORM with NestJs - official doc](https://docs.nestjs.com/techniques/database)
 
 ## License
 
