@@ -6,7 +6,7 @@ import { Repository } from 'typeorm';
 
 import { CreateTaskDto } from './dto/create-task.dto';
 import { GetTaskFilterDto } from './dto/get-task-filter.dto';
-import { TaskStatus } from './task-status-enum.model';
+import { TaskDelResp, TaskStatus } from './task.model';
 import { Task } from './task.entity';
 
 @Injectable()
@@ -31,5 +31,33 @@ export class TasksService {
     }
 
     return foundTask;
+  }
+
+  async createTask({ title, description }: CreateTaskDto): Promise<Task> {
+    const task: Task = this.taskRepo.create({
+      title,
+      description,
+      status: TaskStatus.OPEN,
+    });
+
+    await this.taskRepo.save(task);
+    return task;
+  }
+
+  async removeTask(id: string): Promise<TaskDelResp> {
+    const deleteResp: TaskDelResp = {
+      id,
+      message: 'Task deleted successfully.',
+    };
+
+    const result = await this.taskRepo.delete({ id });
+
+    if (result.affected === 0) {
+      throw new NotFoundException(
+        `Unable to delete the task with id: '${id}'.`,
+      );
+    }
+
+    return deleteResp;
   }
 }

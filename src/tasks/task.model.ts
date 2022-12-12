@@ -3,3 +3,8 @@ export enum TaskStatus {
   IN_PROGRRESS = 'IN_PROGRRESS',
   DONE = 'DONE',
 }
+
+export interface TaskDelResp {
+  id: string;
+  message: string;
+}
