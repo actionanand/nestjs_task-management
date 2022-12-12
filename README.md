@@ -222,6 +222,7 @@ postgres=#
 - [Class-Validator github](https://github.com/typestack/class-validator)
 - [How to run PostgreSQL & PgAdmin in 3 steps using Docker](https://migueldoctor.medium.com/how-to-run-postgresql-pgadmin-in-3-steps-using-docker-d6fe06e47ca1)
 - [How to run Postgres on Docker part 1](https://www.optimadata.nl/blogs/1/n8dyr5-how-to-run-postgres-on-docker-part-1)
+- [Active Record vs Data Mapper](https://github.com/typeorm/typeorm/blob/master/docs/active-record-data-mapper.md)
 
 
 ## License
