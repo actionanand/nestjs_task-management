@@ -20,14 +20,10 @@ import { TasksService } from './tasks.service';
 export class TasksController {
   constructor(private readonly taskServ: TasksService) {}
 
-  // @Get()
-  // onGetTasks(@Query() filterDto: GetTaskFilterDto): Task[] {
-  //   if (Object.keys(filterDto).length) {
-  //     return this.taskServ.getTasksWithFilters(filterDto);
-  //   } else {
-  //     return this.taskServ.getAllTasks();
-  //   }
-  // }
+  @Get()
+  onGetTasks(@Query() filterDto: GetTaskFilterDto): Promise<Task[]> {
+    return this.taskServ.getTasks(filterDto);
+  }
 
   @Get('/:id')
   onGetTaskById(@Param('id') id: string): Promise<Task> {
@@ -45,11 +41,11 @@ export class TasksController {
     return this.taskServ.removeTask(id);
   }
 
-  // @Patch('/:id/status')
-  // onUpdateTaskStatus(
-  //   @Param('id') id: string,
-  //   @Body() { status }: UpdateTaskStatusDto,
-  // ): Task {
-  //   return this.taskServ.updateTaskStatus(id, status);
-  // }
+  @Patch('/:id/status')
+  onUpdateTaskStatus(
+    @Param('id') id: string,
+    @Body() { status }: UpdateTaskStatusDto,
+  ): Promise<Task> {
+    return this.taskServ.updateTaskStatus(id, status);
+  }
 }

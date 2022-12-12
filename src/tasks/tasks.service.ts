@@ -16,6 +16,24 @@ export class TasksService {
     private taskRepo: Repository<Task>,
   ) {}
 
+  async getTasks({ status, search }: GetTaskFilterDto): Promise<Task[]> {
+    const query = this.taskRepo.createQueryBuilder('task');
+
+    if (status) {
+      query.andWhere('task.status = :statusVal', { statusVal: status });
+    }
+
+    if (search) {
+      query.andWhere(
+        'LOWER(task.title) LIKE LOWER(:search) OR LOWER(task.description) LIKE LOWER(:search)',
+        { search: `%${search}%` },
+      );
+    }
+
+    const foundTasks = await query.getMany();
+    return foundTasks;
+  }
+
   async getTaskById(id: string): Promise<Task> {
     let foundTask: Task;
     let errMsg = `Task with id: '${id}' not found.`;
@@ -59,5 +77,13 @@ export class TasksService {
     }
 
     return deleteResp;
+  }
+
+  async updateTaskStatus(id: string, status: TaskStatus) {
+    const foundTask: Task = await this.getTaskById(id);
+    foundTask.status = status;
+
+    await this.taskRepo.save(foundTask);
+    return foundTask;
   }
 }
