@@ -17,10 +17,17 @@ export class TasksService {
   ) {}
 
   async getTaskById(id: string): Promise<Task> {
-    const foundTask = await this.taskRepo.findOne({ where: { id } });
+    let foundTask: Task;
+    let errMsg = `Task with id: '${id}' not found.`;
+
+    try {
+      foundTask = await this.taskRepo.findOne({ where: { id } });
+    } catch (error) {
+      errMsg = error.message || 'Oops, Something went wrong.';
+    }
 
     if (!foundTask) {
-      throw new NotFoundException(`Task with id: '${id}' not found.`);
+      throw new NotFoundException(errMsg);
     }
 
     return foundTask;
