@@ -7,16 +7,19 @@ import {
 
 import { InjectRepository } from '@nestjs/typeorm';
 import * as bcrypt from 'bcrypt';
+import { JwtService } from '@nestjs/jwt';
 
 import { Repository } from 'typeorm';
 import { AuthCredentialsDto } from './dto/auth-credentials.dto';
 import { User } from './user.entity';
+import { AuthResp, JwtPayload } from './auth.model';
 
 @Injectable()
 export class AuthService {
   constructor(
     @InjectRepository(User)
     private userRepo: Repository<User>,
+    private jwtServ: JwtService,
   ) {}
 
   async signUp({
@@ -45,7 +48,7 @@ export class AuthService {
     }
   }
 
-  async signIn({ username, password }: AuthCredentialsDto): Promise<string> {
+  async signIn({ username, password }: AuthCredentialsDto): Promise<AuthResp> {
     const foundUser = await this.userRepo.findOne({ where: { username } });
 
     if (!foundUser) {
@@ -57,7 +60,18 @@ export class AuthService {
     const isPassRight = await bcrypt.compare(password, foundUser.password);
 
     if (isPassRight) {
-      return 'User logged In successfully!';
+      const payload: JwtPayload = {
+        username,
+      };
+
+      const accessToken: string = await this.jwtServ.sign(payload);
+
+      const authResp: AuthResp = {
+        username,
+        accessToken,
+      };
+
+      return authResp;
     }
 
     throw new UnauthorizedException('Please check your password!');

@@ -2,6 +2,7 @@ import { Body, Controller, Post } from '@nestjs/common';
 
 import { AuthService } from './auth.service';
 import { AuthCredentialsDto } from './dto/auth-credentials.dto';
+import { AuthResp } from './auth.model';
 
 @Controller('auth')
 export class AuthController {
@@ -13,7 +14,7 @@ export class AuthController {
   }
 
   @Post('/signin')
-  onSignIn(@Body() authCredentials: AuthCredentialsDto): Promise<string> {
+  onSignIn(@Body() authCredentials: AuthCredentialsDto): Promise<AuthResp> {
     return this.authServ.signIn(authCredentials);
   }
 }
