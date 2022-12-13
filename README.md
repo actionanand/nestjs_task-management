@@ -225,6 +225,7 @@ postgres=#
 - [Active Record vs Data Mapper](https://github.com/typeorm/typeorm/blob/master/docs/active-record-data-mapper.md)
 - [TypeOrm Repository APIs - doc](https://orkhan.gitbook.io/typeorm/docs/repository-api)
 - [Connecting TypeORM with NestJs - official doc](https://docs.nestjs.com/techniques/database)
+- [Understanding object validation with Joi in NestJS](https://blog.logrocket.com/understanding-object-validation-joi-nestjs/)
 
 ## License
 
