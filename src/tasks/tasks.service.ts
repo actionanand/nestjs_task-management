@@ -17,8 +17,13 @@ export class TasksService {
     private taskRepo: Repository<Task>,
   ) {}
 
-  async getTasks({ status, search }: GetTaskFilterDto): Promise<Task[]> {
+  async getTasks(
+    { status, search }: GetTaskFilterDto,
+    user: User,
+  ): Promise<Task[]> {
     const query = this.taskRepo.createQueryBuilder('task');
+
+    query.where({ user });
 
     if (status) {
       query.andWhere('task.status = :statusVal', { statusVal: status });
@@ -26,7 +31,7 @@ export class TasksService {
 
     if (search) {
       query.andWhere(
-        'LOWER(task.title) LIKE LOWER(:search) OR LOWER(task.description) LIKE LOWER(:search)',
+        '(LOWER(task.title) LIKE LOWER(:search) OR LOWER(task.description) LIKE LOWER(:search))',
         { search: `%${search}%` },
       );
     }
@@ -35,12 +40,12 @@ export class TasksService {
     return foundTasks;
   }
 
-  async getTaskById(id: string): Promise<Task> {
+  async getTaskById(id: string, user: User): Promise<Task> {
     let foundTask: Task;
     let errMsg = `Task with id: '${id}' not found.`;
 
     try {
-      foundTask = await this.taskRepo.findOne({ where: { id } });
+      foundTask = await this.taskRepo.findOne({ where: { id, user } });
     } catch (error) {
       errMsg = error.message || 'Oops, Something went wrong.';
     }
@@ -67,13 +72,13 @@ export class TasksService {
     return task;
   }
 
-  async removeTask(id: string): Promise<TaskDelResp> {
+  async removeTask(id: string, user: User): Promise<TaskDelResp> {
     const deleteResp: TaskDelResp = {
       id,
       message: 'Task deleted successfully.',
     };
 
-    const result = await this.taskRepo.delete({ id });
+    const result = await this.taskRepo.delete({ id, user });
 
     if (result.affected === 0) {
       throw new NotFoundException(
@@ -84,8 +89,8 @@ export class TasksService {
     return deleteResp;
   }
 
-  async updateTaskStatus(id: string, status: TaskStatus) {
-    const foundTask: Task = await this.getTaskById(id);
+  async updateTaskStatus(id: string, status: TaskStatus, user: User) {
+    const foundTask: Task = await this.getTaskById(id, user);
     foundTask.status = status;
 
     await this.taskRepo.save(foundTask);
