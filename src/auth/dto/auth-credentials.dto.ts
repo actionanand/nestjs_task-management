@@ -5,7 +5,7 @@ import {
   Matches,
   MaxLength,
   MinLength,
-} from 'class-validator';
+} from 'class-validator'; // validation pipes
 
 export class AuthCredentialsDto {
   @IsNotEmpty()

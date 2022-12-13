@@ -20,6 +20,6 @@ export class Task {
   status: TaskStatus;
 
   @ManyToOne((_type) => User, (user) => user.tasks, { eager: false })
-  @Exclude({ toPlainOnly: true })
+  @Exclude({ toPlainOnly: true }) // this decorator along with interceptor to keep only userId from user while saving tasks
   user: User;
 }
