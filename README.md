@@ -1,6 +1,8 @@
 ## Frontend for this `nestjs` backend
 
-[nestjs_task-management-gui - github react](https://github.com/actionanand/nestjs_task-management-gui)
+* [nestjs_task-management-gui - github react](https://github.com/actionanand/nestjs_task-management-gui)
+
+<hr/>
 
 <p align="center">
   <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
