@@ -22,17 +22,25 @@ import { configValidationSchema } from './config.schema';
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
-      useFactory: async (configServ: ConfigService) => ({
-        type: 'postgres',
-        host: configServ.get('DB_HOST'),
-        port: configServ.get('DB_PORT'),
-        username: configServ.get('DB_USERNAME'),
-        password: configServ.get('DB_PASSWORD'),
-        database: configServ.get('DB_DATABASE'),
-        autoLoadEntities: true,
-        synchronize: true,
-        entities: [Task, User],
-      }),
+      useFactory: async (configServ: ConfigService) => {
+        const isProd = configServ.get('STAGE') === 'prod';
+
+        return {
+          ssl: isProd,
+          extra: {
+            ssl: isProd ? { rejectUnauthorized: false } : null,
+          },
+          type: 'postgres',
+          host: configServ.get('DB_HOST'),
+          port: configServ.get('DB_PORT'),
+          username: configServ.get('DB_USERNAME'),
+          password: configServ.get('DB_PASSWORD'),
+          database: configServ.get('DB_DATABASE'),
+          autoLoadEntities: true,
+          synchronize: true,
+          entities: [Task, User],
+        };
+      },
     }),
     // TypeOrmModule.forRoot({
     //   type: 'postgres',
