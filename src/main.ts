@@ -12,7 +12,7 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe());
   app.useGlobalInterceptors(new TransformInterceptor());
 
-  const nestJsPort = 3000;
+  const nestJsPort = process.env.PORT;
   await app.listen(nestJsPort);
   logger.log(`Application is listening at port ${nestJsPort}`);
 }
